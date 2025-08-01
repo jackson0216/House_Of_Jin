@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House of Jin | 金咖啡餐厅</title>
     <style>
-        /* 基础样式 - 后续可以完善 */
         * {
             margin: 0;
             padding: 0;
@@ -14,6 +13,7 @@
         }
         
         body {
+            background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
         }
@@ -25,145 +25,315 @@
         }
         
         header {
-            background-color: #8B4513; /* 棕色系 */
+            background-color: #8B4513;
             color: white;
             padding: 20px 0;
+            text-align: center;
         }
         
         nav ul {
             display: flex;
             list-style: none;
+            justify-content: center;
         }
         
         nav ul li {
-            margin-right: 20px;
+            margin: 0 15px;
         }
         
         nav ul li a {
             color: white;
             text-decoration: none;
             font-weight: bold;
+            font-size: 18px;
         }
         
         .hero {
-            background-image: url('restaurant-hero.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 500px;
+            background-color: #e6d5b8;
+            height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
         }
         
-        .hero-content h1 {
+        h1 {
             font-size: 3rem;
             margin-bottom: 20px;
+            color: #5a3921;
         }
         
         section {
-            padding: 60px 0;
+            padding: 40px 0;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #5a3921;
+        }
+        
+        .menu-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
         }
         
         .menu-item {
-            margin-bottom: 30px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .menu-item h3 {
+            padding: 15px;
+            text-align: center;
+            color: #5a3921;
+        }
+        
+        .order-form {
+            background: white;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #5a3921;
+        }
+        
+        #confirmation {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
         }
         
         footer {
-            background-color: #333;
+            background-color: #5a3921;
             color: white;
             text-align: center;
-            padding: 30px 0;
+            padding: 20px 0;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
+    <!-- Navigation -->
     <header>
         <div class="container">
             <nav>
                 <ul>
-                    <li><a href="#home">首页</a></li>
-                    <li><a href="#about">关于我们</a></li>
-                    <li><a href="#menu">菜单</a></li>
-                    <li><a href="#gallery">环境展示</a></li>
-                    <li><a href="#contact">联系我们</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#drinks">Drinks</a></li>
+                    <li><a href="#food">Food</a></li>
+                    <li><a href="#order">Order</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- 主横幅 -->
+    <!-- Hero Banner -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>House of Jin</h1>
-            <p>金咖啡 - 融合东西方美食精髓</p>
-            <button>立即预订</button>
+            <p>金咖啡 - Authentic Malaysian Flavors</p>
         </div>
     </section>
 
-    <!-- 关于我们 -->
-    <section id="about" class="container">
-        <h2>关于金咖啡</h2>
-        <p>这里是关于餐厅的简介...</p>
-        <!-- 可以添加更多内容 -->
-    </section>
-
-    <!-- 特色菜单 -->
-    <section id="menu" class="container">
-        <h2>我们的特色菜单</h2>
-        <div class="menu-item">
-            <h3>招牌菜品</h3>
-            <p>菜品描述...</p>
-        </div>
-        <div class="menu-item">
-            <h3>特色饮品</h3>
-            <p>饮品描述...</p>
-        </div>
-        <!-- 可以添加更多菜单项 -->
-    </section>
-
-    <!-- 环境展示 -->
-    <section id="gallery" class="container">
-        <h2>餐厅环境</h2>
-        <div class="gallery-grid">
-            <!-- 这里可以添加图片 -->
-            <p>餐厅环境照片展示区...</p>
-        </div>
-    </section>
-
-    <!-- 联系我们 -->
-    <section id="contact" class="container">
-        <h2>联系我们</h2>
-        <div class="contact-info">
-            <p>地址: [餐厅地址]</p>
-            <p>电话: [联系电话]</p>
-            <p>营业时间: [营业时间]</p>
-            <p>邮箱: [电子邮箱]</p>
-        </div>
-        <form class="reservation-form">
-            <h3>在线预订</h3>
-            <input type="text" placeholder="姓名">
-            <input type="tel" placeholder="电话">
-            <input type="date" placeholder="日期">
-            <input type="time" placeholder="时间">
-            <input type="number" placeholder="人数">
-            <button type="submit">提交预订</button>
-        </form>
-    </section>
-
-    <!-- 页脚 -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 House of Jin 金咖啡. 版权所有.</p>
-            <div class="social-links">
-                <!-- 社交媒体链接 -->
-                <a href="#">微信</a>
-                <a href="#">微博</a>
-                <a href="#">大众点评</a>
+    <!-- Drinks Menu -->
+    <section id="drinks" class="container">
+        <h2>Our Signature Drinks</h2>
+        <div class="menu-gallery">
+            <div class="menu-item">
+                <img src="images/drinks/kopiice.jpg" alt="Kopi Ice">
+                <h3>Kopi Ice</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/drinks/milolava.jpg" alt="Milo Lava">
+                <h3>Milo Lava</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/drinks/tehais.jpg" alt="Teh Ais">
+                <h3>Teh Ais</h3>
             </div>
         </div>
+    </section>
+
+    <!-- Food Menu -->
+    <section id="food" class="container">
+        <h2>Our Delicious Food</h2>
+        <div class="menu-gallery">
+            <div class="menu-item">
+                <img src="images/food/coffeebean.jpg" alt="Coffee Bean Special">
+                <h3>Coffee Bean Special</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/food/fishnchip.jpg" alt="Fish & Chips">
+                <h3>Fish & Chips</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/food/localfood.jpg" alt="Local Delight">
+                <h3>Local Delight</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/food/nasilemak.jpg" alt="Nasi Lemak">
+                <h3>Nasi Lemak</h3>
+            </div>
+            <div class="menu-item">
+                <img src="images/food/western.jpg" alt="Western Set">
+                <h3>Western Set</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form -->
+    <section id="order" class="container">
+        <h2>Pre-Order Now</h2>
+        <div class="order-form">
+            <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="items">Items to Order</label>
+                    <select id="items" name="items[]" multiple>
+                        <option value="Kopi Ice">Kopi Ice</option>
+                        <option value="Milo Lava">Milo Lava</option>
+                        <option value="Teh Ais">Teh Ais</option>
+                        <option value="Coffee Bean Special">Coffee Bean Special</option>
+                        <option value="Fish & Chips">Fish & Chips</option>
+                        <option value="Local Delight">Local Delight</option>
+                        <option value="Nasi Lemak">Nasi Lemak</option>
+                        <option value="Western Set">Western Set</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Special Requests</label>
+                    <textarea id="message" name="message" rows="4"></textarea>
+                </div>
+                
+                <button type="submit">Place Order</button>
+            </form>
+            
+            <div id="confirmation">
+                <h3>Thank you for your order!</h3>
+                <p>We've received your pre-order and will send a confirmation to your email shortly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 House of Jin. All rights reserved.</p>
+            <p>Contact: +60 12-345 6789 | hello@houseofjin.com</p>
+        </div>
     </footer>
+
+    <script>
+        // Form submission handling
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            // Send form data to Formspree
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show confirmation message
+                    document.getElementById('confirmation').style.display = 'block';
+                    form.style.display = 'none';
+                    
+                    // Reset form
+                    form.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .catch(error => {
+                alert('There was a problem with your submission. Please try again.');
+                console.error(error);
+            });
+        });
+    </script>
 </body>
 </html>
