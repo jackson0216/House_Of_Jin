@@ -374,20 +374,35 @@
 
 <script>
 async function checkAvailability() {
-  const response = await fetch('https://script.google.com/macros/s/AKfycbzLhesO4APjDwnhjxiTX0oxQeHqen_KYmHv4I4Lztnk/dev');
-  const data = await response.json();
+    try {
+        const today = new Date().toISOString().split('T')[0];
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzLhesO4APjDwnhjxiTX0oxQeHqen_KYmHv4I4Lztnk/dev');
+  check&date=${today}');
   
-  if(data.isFull) {
-    document.getElementById('bookingForm').style.display = 'none';
-    document.getElementById('fullBookingAlert').style.display = 'block';
-  } else {
-    document.getElementById('availableSlots').textContent = 
-      data.availableSlots.join(', ') || '仅剩少量席位';
+    if (!response.ok) throw new Error('Network error');
+    
+    const data = await response.json();
+    
+    if (data.error) {
+      document.getElementById('availableSlots').textContent = "系统繁忙，请稍后再试";
+      console.error(data.error);
+    } else {
+      const slots = data.availableSlots.length > 0 ? 
+        data.availableSlots.join(' | ') : '已满座';
+      document.getElementById('availableSlots').innerHTML = `
+        <strong>${slots}</strong> (剩余座位: ${data.remainingSeats || 0})
+      `;
+    }
+  } catch (error) {
+    document.getElementById('availableSlots').textContent = "无法加载数据";
+    console.error("Fetch failed:", error);
   }
 }
 
-checkAvailability();
-setInterval(checkAvailability, 300000); // 每5分钟刷新
+document.addEventListener('DOMContentLoaded', () => {
+  checkAvailability();
+  setInterval(checkAvailability, 120000);
+});
 </script>
     
     <!-- Contact -->
