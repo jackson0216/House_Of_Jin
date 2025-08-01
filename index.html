@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House of Jin | 金咖啡餐厅</title>
+    <title>House of Jin | 金咖啡</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
         }
         
         body {
@@ -35,6 +35,7 @@
             display: flex;
             list-style: none;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         nav ul li {
@@ -46,6 +47,13 @@
             text-decoration: none;
             font-weight: bold;
             font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: #5a3921;
         }
         
         .hero {
@@ -55,22 +63,49 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            background-image: url('images/hero.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
         
         h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            color: #5a3921;
+            color: #fff;
         }
         
         section {
-            padding: 40px 0;
+            padding: 60px 0;
         }
         
         h2 {
             text-align: center;
             margin-bottom: 30px;
             color: #5a3921;
+            font-size: 2.2rem;
+        }
+        
+        .bilingual {
+            margin-bottom: 40px;
+        }
+        
+        .bilingual p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .chinese {
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        .english {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #8B4513;
+            padding-left: 15px;
+            margin-top: 15px;
         }
         
         .menu-gallery {
@@ -104,63 +139,67 @@
             color: #5a3921;
         }
         
-        .order-form {
-            background: white;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 30px;
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
             border-radius: 8px;
+            overflow: hidden;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        input, select, textarea {
+        .gallery-item img {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s;
         }
         
-        button {
-            background-color: #8B4513;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-        }
-        
-        button:hover {
-            background-color: #5a3921;
-        }
-        
-        #confirmation {
-            display: none;
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            text-align: center;
+        .gallery-item img:hover {
+            transform: scale(1.05);
         }
         
         footer {
             background-color: #5a3921;
             color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0;
             margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            margin: 15px;
+            min-width: 200px;
+        }
+        
+        .language-switcher {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .language-switcher button {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .language-switcher button.active {
+            background-color: white;
+            color: #5a3921;
         }
     </style>
 </head>
@@ -170,10 +209,11 @@
         <div class="container">
             <nav>
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#drinks">Drinks</a></li>
-                    <li><a href="#food">Food</a></li>
-                    <li><a href="#order">Order</a></li>
+                    <li><a href="#home">首页 / Home</a></li>
+                    <li><a href="#about">关于我们 / About</a></li>
+                    <li><a href="#menu">菜单 / Menu</a></li>
+                    <li><a href="#gallery">环境 / Gallery</a></li>
+                    <li><a href="#contact">联系我们 / Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -182,112 +222,122 @@
     <!-- Hero Banner -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>House of Jin</h1>
-            <p>金咖啡 - Authentic Malaysian Flavors</p>
+            <h1>金咖啡<br>House of Jin</h1>
+            <p>传统与创新的融合 / Where Tradition Meets Innovation</p>
         </div>
     </section>
 
-    <!-- Drinks Menu -->
-    <section id="drinks" class="container">
-        <h2>Our Signature Drinks</h2>
+    <!-- About Us -->
+    <section id="about" class="container">
+        <h2>关于我们 / About Us</h2>
+        <div class="bilingual">
+            <div class="chinese">
+                <p>三十年来，金井JinJing不仅是一家餐饮老店，更是我们家庭的根，是马来西亚无数人味蕾与回忆的交汇点。父母用汗水与坚持，在这间小店里煮出一代又一代人熟悉的味道，也传承了他们对食物、家庭与人情味的信念。</p>
+                
+                <p>如今，孩子长大了，把这份记忆继续延续。在不改变初心的前提下，将老店翻新成一间融合传统与现代的新式咖啡厅——金咖啡 House of Jing。</p>
+                
+                <p>这里有父母的精神，有家的温度，也有新的可能。我们希望，无论是熟悉的老街坊，还是慕名而来的年轻人，都能在这间店里，尝到记忆的味道，喝出文化的延续。</p>
+                
+                <p>三十年的味道，不只是餐桌上的香气，更是心里的一份牵挂。</p>
+            </div>
+            <div class="english">
+                <p>For nearly 30 years, JinJing was more than just a restaurant — it was a home, a legacy, and a place where countless Malaysians found warmth in familiar flavors. Our parents dedicated their lives to this humble eatery, crafting meals rich with tradition, love, and community.</p>
+                
+                <p>Now, as the next generation, we carry that story forward. Without forgetting where we came from, we've transformed the old shop into a modern café — House of Jing.</p>
+                
+                <p>It's a space where the past meets the present. A place where the spirit of our parents lives on in every cup and every smile. Whether you're a long-time neighbor or a curious newcomer, we invite you to experience a taste of memory, and sip on heritage reborn.</p>
+                
+                <p>30 years of flavor — not just a taste, but a heartfelt connection across generations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="container">
+        <h2>菜单 / Menu</h2>
+        
+        <h3 style="text-align:center;margin:30px 0 20px;color:#5a3921;">饮品 / Drinks</h3>
         <div class="menu-gallery">
             <div class="menu-item">
                 <img src="images/drinks/kopiice.jpg" alt="Kopi Ice">
-                <h3>Kopi Ice</h3>
+                <h3>Kopi Ice<br>冰咖啡</h3>
             </div>
             <div class="menu-item">
                 <img src="images/drinks/milolava.jpg" alt="Milo Lava">
-                <h3>Milo Lava</h3>
+                <h3>Milo Lava<br>美禄火山</h3>
             </div>
             <div class="menu-item">
                 <img src="images/drinks/tehais.jpg" alt="Teh Ais">
-                <h3>Teh Ais</h3>
+                <h3>Teh Ais<br>冰茶</h3>
             </div>
         </div>
-    </section>
-
-    <!-- Food Menu -->
-    <section id="food" class="container">
-        <h2>Our Delicious Food</h2>
+        
+        <h3 style="text-align:center;margin:30px 0 20px;color:#5a3921;">食物 / Food</h3>
         <div class="menu-gallery">
             <div class="menu-item">
                 <img src="images/food/coffeebean.jpg" alt="Coffee Bean Special">
-                <h3>Coffee Bean Special</h3>
+                <h3>Coffee Bean Special<br>特调咖啡豆餐</h3>
             </div>
             <div class="menu-item">
                 <img src="images/food/fishnchip.jpg" alt="Fish & Chips">
-                <h3>Fish & Chips</h3>
+                <h3>Fish & Chips<br>炸鱼薯条</h3>
             </div>
             <div class="menu-item">
                 <img src="images/food/localfood.jpg" alt="Local Delight">
-                <h3>Local Delight</h3>
+                <h3>Local Delight<br>本地风味</h3>
             </div>
             <div class="menu-item">
                 <img src="images/food/nasilemak.jpg" alt="Nasi Lemak">
-                <h3>Nasi Lemak</h3>
+                <h3>Nasi Lemak<br>椰浆饭</h3>
             </div>
             <div class="menu-item">
                 <img src="images/food/western.jpg" alt="Western Set">
-                <h3>Western Set</h3>
+                <h3>Western Set<br>西式套餐</h3>
             </div>
         </div>
     </section>
 
-    <!-- Order Form -->
-    <section id="order" class="container">
-        <h2>Pre-Order Now</h2>
-        <div class="order-form">
-            <form id="orderForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="time">Time</label>
-                    <input type="time" id="time" name="time" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="items">Items to Order</label>
-                    <select id="items" name="items[]" multiple>
-                        <option value="Kopi Ice">Kopi Ice</option>
-                        <option value="Milo Lava">Milo Lava</option>
-                        <option value="Teh Ais">Teh Ais</option>
-                        <option value="Coffee Bean Special">Coffee Bean Special</option>
-                        <option value="Fish & Chips">Fish & Chips</option>
-                        <option value="Local Delight">Local Delight</option>
-                        <option value="Nasi Lemak">Nasi Lemak</option>
-                        <option value="Western Set">Western Set</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Special Requests</label>
-                    <textarea id="message" name="message" rows="4"></textarea>
-                </div>
-                
-                <button type="submit">Place Order</button>
-            </form>
-            
-            <div id="confirmation">
-                <h3>Thank you for your order!</h3>
-                <p>We've received your pre-order and will send a confirmation to your email shortly.</p>
+    <!-- Gallery -->
+    <section id="gallery" class="container">
+        <h2>环境显示 / Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="images/gallery/interior1.jpg" alt="Cafe Interior">
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/interior2.jpg" alt="Dining Area">
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/interior3.jpg" alt="Coffee Bar">
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/interior4.jpg" alt="Outdoor Seating">
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/interior5.jpg" alt="Heritage Wall">
+            </div>
+            <div class="gallery-item">
+                <img src="images/gallery/interior6.jpg" alt="Special Corner">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="container">
+        <h2>联系我们 / Contact Us</h2>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>地址 / Address</h3>
+                <p>123 Jalan Besar, Kuala Lumpur, Malaysia</p>
+            </div>
+            <div class="footer-section">
+                <h3>营业时间 / Hours</h3>
+                <p>每日 / Daily: 9:00 AM - 10:00 PM</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式 / Contact</h3>
+                <p>电话 / Tel: +60 12-345 6789</p>
+                <p>电邮 / Email: hello@houseofjin.com</p>
             </div>
         </div>
     </section>
@@ -295,45 +345,9 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2023 House of Jin. All rights reserved.</p>
-            <p>Contact: +60 12-345 6789 | hello@houseofjin.com</p>
+            <p>&copy; 2025 金咖啡 House of Jin. 版权所有 / All rights reserved.</p>
+            <p>传承三十年的味道 / 30 Years of Heritage Flavor</p>
         </div>
     </footer>
-
-    <script>
-        // Form submission handling
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const form = e.target;
-            const formData = new FormData(form);
-            
-            // Send form data to Formspree
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Show confirmation message
-                    document.getElementById('confirmation').style.display = 'block';
-                    form.style.display = 'none';
-                    
-                    // Reset form
-                    form.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            })
-            .catch(error => {
-                alert('There was a problem with your submission. Please try again.');
-                console.error(error);
-            });
-        });
-    </script>
 </body>
 </html>
