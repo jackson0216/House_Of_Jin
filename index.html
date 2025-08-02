@@ -466,60 +466,240 @@
         </div>
     </section>
 
-    <section id="reservation">
-  <h2>在线订位 <span class="english">Table Reservation</span></h2>
-  
-  <div id="fullBookingAlert" class="alert" style="display:none;">
-    <p>今日已满座 / <span class="english">We're fully booked today</span></p>
-    <button id="joinWaitlist">加入等待名单 / Join Waitlist</button>
-  </div>
-
-  <form id="bookingForm" class="reservation-form">
-    <div id="liveAvailability">
-      <p>实时可订时段：<span id="availableSlots">加载中...</span></p>
-    </div>
-    <button type="submit">确认订位</button>
-  </form>
-
-  <!-- 等待名单表单 (初始隐藏) -->
-  <form id="waitlistForm" style="display:none;">
-    <input type="text" name="name" placeholder="姓名 / Name" required>
-    <input type="tel" name="phone" placeholder="电话 / Phone" required>
-    <button type="submit">提交</button>
-  </form>
+    <!-- Reservation Section -->
+    <section id="reservation" class="container">
+        <h2>在线订位 / Table Reservation</h2>
+        
+        <div id="fullBookingAlert" class="alert" style="display:none;">
+            <p>今日已满座 / <span class="english">We're fully booked today</span></p>
+            <button id="joinWaitlist">加入等待名单 / Join Waitlist</button>
+        </div>
+        
+        <div id="successMessage" class="success-message">
+            <p>订位成功! 我们会尽快与您确认 / <span class="english">Reservation successful! We'll confirm with you shortly.</span></p>
+        </div>
+        
+        <form id="bookingForm" class="reservation-form">
+            <div class="form-group">
+                <label for="name">姓名 / Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">电话 / Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">日期 / Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="time">时间 / Time</label>
+                <select id="time" name="time" required>
+                    <option value="">选择时间 / Select time</option>
+                    <!-- Times will be populated by JavaScript -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="people">人数 / Number of People</label>
+                <input type="number" id="people" name="people" min="1" max="20" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">备注 / Special Requests</label>
+                <textarea id="notes" name="notes" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group full-width">
+                <button type="submit">确认订位 / Confirm Reservation</button>
+            </div>
+        </form>
+        
+        <div id="liveAvailability">
+            <h3>实时可订时段 / Available Slots</h3>
+            <p>加载中... / <span class="english">Loading...</span></p>
+        </div>
+        
+        <!-- Staff Section for Customer Count -->
+        <div class="staff-section">
+            <h3>当前顾客人数 / Current Customers</h3>
+            <div id="currentCustomers">
+                <p>店内顾客: <span class="customer-count">0</span></p>
+                <div class="staff-controls">
+                    <input type="number" id="customerCountInput" min="0" max="100" value="0">
+                    <button id="updateCustomerCount">更新人数 / Update Count</button>
+                </div>
+            </div>
+        </div>
 </section>
 
 <script>
-async function checkAvailability() {
-    try {
-        const today = new Date().toISOString().split('T')[0];
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzLhesO4APjDwnhjxiTX0oxQeHqen_KYmHv4I4Lztnk/dev');
-  check&date=${today}');
+// Configuration
+const API_URL = 'https://script.google.com/macros/s/AKfycbzaIooFS7OCEt6HUY0ZlZ8b1ljS-ePdvaK6UWHJj518HaLDUT-4M4YbxPSfz1WkDVJqnQ/exec'; 
+
+// DOM Elements
+const bookingForm = document.getElementById('bookingForm');
+const waitlistForm = document.getElementById('waitlistForm');
+const fullBookingAlert = document.getElementById('fullBookingAlert');
+const successMessage = document.getElementById('successMessage');
+const joinWaitlistBtn = document.getElementById('joinWaitlist');
+const availableSlotsEl = document.getElementById('availableSlots');
+const customerCountEl = document.querySelector('.customer-count');
+const updateCountBtn = document.getElementById('updateCustomerCount');
+const countInput = document.getElementById('customerCountInput');
+
+// Initialize date picker
+document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+// Load time slots for today
+loadTimeSlots();
+loadCustomerCount();
+
+// Check availability every 2 minutes
+setInterval(loadTimeSlots, 120000);
+setInterval(loadCustomerCount, 30000);
+
+// Event listeners
+bookingForm.addEventListener('submit', handleReservation);
+joinWaitlistBtn.addEventListener('click', showWaitlistForm);
+updateCountBtn.addEventListener('click', updateCustomerCount);
+
+// Functions
+async function loadTimeSlots() {
+  const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
   
-    if (!response.ok) throw new Error('Network error');
+  try {
+    const response = await fetch(`${API_URL}?action=checkAvailability&date=${date}`);
+    const data = await response.json();
+    
+    if (data.error) {
+      availableSlotsEl.innerHTML = `Error: ${data.error}`;
+      return;
+    }
+    
+    // Update available slots display
+    if (data.availableSlots.length > 0) {
+      availableSlotsEl.innerHTML = `
+        <strong>${data.availableSlots.join(' | ')}</strong> 
+        (剩余座位: ${data.remainingSeats || 0} / <span class="english">Seats left: ${data.remainingSeats || 0}</span>)
+      `;
+      fullBookingAlert.style.display = 'none';
+    } else {
+      availableSlotsEl.innerHTML = '已满座 / <span class="english">Fully booked</span>';
+      fullBookingAlert.style.display = 'flex';
+    }
+    
+    // Update time slot dropdown
+    updateTimeDropdown(data.availableSlots);
+  } catch (error) {
+    availableSlotsEl.innerHTML = '无法加载数据 / <span class="english">Unable to load data</span>';
+    console.error('Error:', error);
+  }
+}
+
+async function loadCustomerCount() {
+  try {
+    const response = await fetch(`${API_URL}?action=getCustomerCount`);
+    const data = await response.json();
+    
+    if (!data.error) {
+      customerCountEl.textContent = data.count;
+      countInput.value = data.count;
+    }
+  } catch (error) {
+    console.error('Error loading customer count:', error);
+  }
+}
+
+async function updateCustomerCount() {
+  const count = parseInt(countInput.value, 10);
+  
+  if (isNaN(count) {
+    alert('请输入有效数字 / Please enter a valid number');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`${API_URL}?action=updateCustomerCount&count=${count}`);
+    const data = await response.json();
+    
+    if (data.success) {
+      customerCountEl.textContent = count;
+      alert('人数已更新 / Count updated');
+    } else {
+      alert('更新失败 / Update failed');
+    }
+  } catch (error) {
+    console.error('Error updating count:', error);
+    alert('错误 / Error: ' + error.message);
+  }
+}
+
+async function handleReservation(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(bookingForm);
+  const params = new URLSearchParams();
+  
+  for (const [key, value] of formData.entries()) {
+    params.append(key, value);
+  }
+  
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: params.toString() + '&action=makeReservation',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
     
     const data = await response.json();
     
     if (data.error) {
-      document.getElementById('availableSlots').textContent = "系统繁忙，请稍后再试";
-      console.error(data.error);
+      alert(`订位失败 / Reservation failed: ${data.error}`);
     } else {
-      const slots = data.availableSlots.length > 0 ? 
-        data.availableSlots.join(' | ') : '已满座';
-      document.getElementById('availableSlots').innerHTML = `
-        <strong>${slots}</strong> (剩余座位: ${data.remainingSeats || 0})
-      `;
+      // Show success message
+      bookingForm.reset();
+      successMessage.style.display = 'block';
+      setTimeout(() => successMessage.style.display = 'none', 5000);
+      
+      // Reload availability
+      loadTimeSlots();
     }
   } catch (error) {
-    document.getElementById('availableSlots').textContent = "无法加载数据";
-    console.error("Fetch failed:", error);
+    alert('网络错误 / Network error');
+    console.error('Error:', error);
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  checkAvailability();
-  setInterval(checkAvailability, 120000);
-});
+function showWaitlistForm() {
+  bookingForm.style.display = 'none';
+  waitlistForm.style.display = 'block';
+}
+
+function updateTimeDropdown(availableSlots) {
+  const timeSelect = document.getElementById('time');
+  
+  // Clear existing options except the first
+  while (timeSelect.options.length > 1) {
+    timeSelect.remove(1);
+  }
+  
+  // Add available slots
+  availableSlots.forEach(slot => {
+    const option = document.createElement('option');
+    option.value = slot;
+    option.textContent = slot;
+    timeSelect.appendChild(option);
+  });
+}
+
+// Date change handler
+document.getElementById('date').addEventListener('change', loadTimeSlots);
 </script>
     
     <!-- Contact -->
@@ -551,4 +731,5 @@ document.addEventListener('DOMContentLoaded', () => {
     </footer>
 </body>
 </html>
+
 
