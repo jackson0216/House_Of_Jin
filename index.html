@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House of Jin | 金咖啡</title>
+    <title>House of Jin | 金咖啡餐厅</title>
     <style>
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', 'Microsoft YaHei',"楷体", "KaiTi", sans-serif;
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
         }
         
         body {
@@ -24,413 +25,240 @@
             padding: 0 20px;
         }
         
-        header {
-            background-color: #d2b48c;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        nav ul li {
-            margin: 0 15px;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            background-color: #5a3921;
-        }
-        
-        .hero {
-            background: url('images/bg.jpg') center/cover no-repeat;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-        
-        section {
-            padding: 60px 0;
-        }
-        
-        h2 {
-            text-align: left;
-            margin-bottom: 30px;
-            color: #5a3921;
-            font-size: 2.2rem;
-        }
-        
-        .bilingual {
-            margin-bottom: 40px;
-        }
-        
-        .bilingual p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        
-       .chinese {
-            font-family: "楷体", "KaiTi", "STKaiti", serif;
-        }
-        
-        .english {
-            font-style: italic;
-            color: #555;
-            border-left: 3px solid #8B4513;
-            padding-left: 15px;
-            margin-top: 15px;
-        }
-        
-        .menu-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .menu-item {
+        /* 订位表单样式 */
+        .reservation-form {
+            max-width: 800px;
+            margin: 30px auto;
             background: white;
+            padding: 30px;
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .menu-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .menu-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        .menu-item h3 {
-            padding: 15px;
-            text-align: center;
-            color: #5a3921;
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .gallery-item {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        
-        .gallery-item img:hover {
-            transform: scale(1.05);
-        }
-        
-        footer {
-            background-color: #5a3921;
-            color: white;
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 40px;
-        }
-        
-        .footer-content {
+        .form-row {
             display: flex;
-            justify-content: space-around;
             flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
         }
         
-        .footer-section {
-            margin: 15px;
+        .form-group {
+            flex: 1;
             min-width: 200px;
         }
         
-        .language-switcher {
-            text-align: center;
-            margin: 20px 0;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
         
-        .language-switcher button {
-            background: none;
-            border: 1px solid white;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button[type="submit"] {
+            background-color: #8B4513;
             color: white;
-            padding: 5px 15px;
-            margin: 0 5px;
+            border: none;
+            padding: 15px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #5a3921;
+        }
+        
+        /* 实时可订时段 */
+        #liveAvailability {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f8ff;
             border-radius: 4px;
         }
         
-        .language-switcher button.active {
-            background-color: white;
-            color: #5a3921;
+        /* 成功提示 */
+        #confirmationMsg {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
         }
- 
-        #contact.container {
-            padding: 20px;
-            background: #f8f8f8; /* 可选背景色 */
-      }
-
-      .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-      }
-
-      .footer-section {
-            background: white;
+        
+        /* 等待名单提示 */
+        #fullBookingAlert {
+            display: none;
+            background: #fff3cd;
+            color: #856404;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-
-      @media (max-width: 768px) {
-     .footer-content {
-          grid-template-columns: 1fr;
-          gap: 15px;
-     }
-    .footer-section {
-          padding: 15px;
-    }
-  }
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="#home">首页 / Home</a></li>
-                    <li><a href="#about">关于我们 / About</a></li>
-                    <li><a href="#menu">菜单 / Menu</a></li>
-                    <li><a href="#gallery">环境 / Gallery</a></li>
-                    <li><a href="#contact">联系我们 / Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Banner -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>金咖啡<br>House of Jin</h1>
-            <p>传统与创新的融合 / Where Tradition Meets Innovation</p>
-        </div>
-    </section>
-
-    <!-- About Us -->
-    <section id="about" class="container">
-        <h2>关于我们 / About Us</h2>
-        <div class="bilingual">
-            <div class="chinese">
-                <p>三十年来，金井JinJing不仅是一家餐饮老店，更是我们家庭的根，是马来西亚无数人味蕾与回忆的交汇点。父母用汗水与坚持，在这间小店里煮出一代又一代人熟悉的味道，也传承了他们对食物、家庭与人情味的信念。</p>
-                
-                <p>如今，孩子长大了，把这份记忆继续延续。在不改变初心的前提下，将老店翻新成一间融合传统与现代的新式咖啡厅——金咖啡 House of Jing。</p>
-                
-                <p>这里有父母的精神，有家的温度，也有新的可能。我们希望，无论是熟悉的老街坊，还是慕名而来的年轻人，都能在这间店里，尝到记忆的味道，喝出文化的延续。</p>
-                
-                <p>三十年的味道，不只是餐桌上的香气，更是心里的一份牵挂。</p>
-            </div>
-            <div class="english">
-                <p>For nearly 30 years, JinJing was more than just a restaurant — it was a home, a legacy, and a place where countless Malaysians found warmth in familiar flavors. Our parents dedicated their lives to this humble eatery, crafting meals rich with tradition, love, and community.</p>
-                
-                <p>Now, as the next generation, we carry that story forward. Without forgetting where we came from, we've transformed the old shop into a modern café — House of Jing.</p>
-                
-                <p>It's a space where the past meets the present. A place where the spirit of our parents lives on in every cup and every smile. Whether you're a long-time neighbor or a curious newcomer, we invite you to experience a taste of memory, and sip on heritage reborn.</p>
-                
-                <p>30 years of flavor — not just a taste, but a heartfelt connection across generations.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Menu -->
-    <section id="menu" class="container">
-        <h2>菜单 / Menu</h2>
+    <section id="reservation" class="container">
+        <h2>在线订位 / Table Reservation</h2>
         
-        <h3 style="text-align:center;margin:30px 0 20px;color:#5a3921;">饮品 / Drinks</h3>
-        <div class="menu-gallery">
-            <div class="menu-item">
-                <img src="images/drinks/kopiice.jpg" alt="Kopi Ice">
-                <h3>Kopi Ice<br>冰咖啡</h3>
-            </div>
-            <div class="menu-item">
-                <img src="images/drinks/milolava.jpg" alt="Milo Lava">
-                <h3>Milo Lava<br>美禄火山</h3>
-            </div>
-            <div class="menu-item">
-                <img src="images/drinks/tehais.jpg" alt="Teh Ais">
-                <h3>Teh Ais<br>冰茶</h3>
-            </div>
+        <!-- 满座提示 -->
+        <div id="fullBookingAlert">
+            <p>今日已满座 / <span class="english">We're fully booked today</span></p>
+            <button id="joinWaitlist">加入等待名单 / Join Waitlist</button>
         </div>
         
-        <h3 style="text-align:center;margin:30px 0 20px;color:#5a3921;">食物 / Food</h3>
-        <div class="menu-gallery">
-            <div class="menu-item">
-                <img src="images/food/coffeebean.jpg" alt="Coffee Bean Special">
-                <h3>Coffee Bean Special<br>特调咖啡豆餐</h3>
+        <!-- 订位表单 -->
+        <form id="bookingForm" class="reservation-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">姓名 / Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">电话 / Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
             </div>
-            <div class="menu-item">
-                <img src="images/food/fishnchip.jpg" alt="Fish & Chips">
-                <h3>Fish & Chips<br>炸鱼薯条</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">日期 / Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">时间 / Time</label>
+                    <select id="time" name="time" required>
+                        <option value="">选择时间 / Select time</option>
+                        <!-- 时间选项将通过JS动态生成 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="guests">人数 / Guests</label>
+                    <select id="guests" name="guests" required>
+                        <option value="1">1 人</option>
+                        <option value="2">2 人</option>
+                        <option value="4">4 人</option>
+                        <option value="6">6+ 人</option>
+                    </select>
+                </div>
             </div>
-            <div class="menu-item">
-                <img src="images/food/localfood.jpg" alt="Local Delight">
-                <h3>Local Delight<br>本地风味</h3>
+            
+            <div id="liveAvailability">
+                <p>实时可订时段：<span id="availableSlots">加载中...</span></p>
             </div>
-            <div class="menu-item">
-                <img src="images/food/nasilemak.jpg" alt="Nasi Lemak">
-                <h3>Nasi Lemak<br>椰浆饭</h3>
-            </div>
-            <div class="menu-item">
-                <img src="images/food/western.jpg" alt="Western Set">
-                <h3>Western Set<br>西式套餐</h3>
-            </div>
+            
+            <button type="submit">确认订位 / Confirm Booking</button>
+        </form>
+        
+        <!-- 确认消息 -->
+        <div id="confirmationMsg">
+            <h3>🎉 订位成功！ / Booking Confirmed!</h3>
+            <p>我们已发送确认信息至您的联系方式 / Confirmation has been sent</p>
+            <p><small>订位编号 / Booking ID: <span id="bookingId"></span></small></p>
         </div>
     </section>
 
-    <!-- Gallery -->
-    <section id="gallery" class="container">
-        <h2>环境显示 / Gallery</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="images/gallery/interior1.jpg" alt="Cafe Interior">
-            </div>
-            <div class="gallery-item">
-                <img src="images/gallery/interior2.jpg" alt="Dining Area">
-            </div>
-            <div class="gallery-item">
-                <img src="images/gallery/interior3.jpg" alt="Coffee Bar">
-            </div>
-            <div class="gallery-item">
-                <img src="images/gallery/interior4.jpg" alt="Outdoor Seating">
-            </div>
-            <div class="gallery-item">
-                <img src="images/gallery/interior5.jpg" alt="Heritage Wall">
-            </div>
-            <div class="gallery-item">
-                <img src="images/gallery/interior6.jpg" alt="Special Corner">
-            </div>
-        </div>
-    </section>
-
-    <section id="reservation">
-  <h2>在线订位 <span class="english">Table Reservation</span></h2>
-  
-  <div id="fullBookingAlert" class="alert" style="display:none;">
-    <p>今日已满座 / <span class="english">We're fully booked today</span></p>
-    <button id="joinWaitlist">加入等待名单 / Join Waitlist</button>
-  </div>
-
-  <form id="bookingForm" class="reservation-form">
-    <div id="liveAvailability">
-      <p>实时可订时段：<span id="availableSlots">加载中...</span></p>
-    </div>
-    <button type="submit">确认订位</button>
-  </form>
-
-  <!-- 等待名单表单 (初始隐藏) -->
-  <form id="waitlistForm" style="display:none;">
-    <input type="text" name="name" placeholder="姓名 / Name" required>
-    <input type="tel" name="phone" placeholder="电话 / Phone" required>
-    <button type="submit">提交</button>
-  </form>
-</section>
-
-<script>
-async function checkAvailability() {
-    try {
-        const today = new Date().toISOString().split('T')[0];
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzLhesO4APjDwnhjxiTX0oxQeHqen_KYmHv4I4Lztnk/dev');
-  check&date=${today}');
-  
-    if (!response.ok) throw new Error('Network error');
-    
-    const data = await response.json();
-    
-    if (data.error) {
-      document.getElementById('availableSlots').textContent = "系统繁忙，请稍后再试";
-      console.error(data.error);
-    } else {
-      const slots = data.availableSlots.length > 0 ? 
-        data.availableSlots.join(' | ') : '已满座';
-      document.getElementById('availableSlots').innerHTML = `
-        <strong>${slots}</strong> (剩余座位: ${data.remainingSeats || 0})
-      `;
-    }
-  } catch (error) {
-    document.getElementById('availableSlots').textContent = "无法加载数据";
-    console.error("Fetch failed:", error);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  checkAvailability();
-  setInterval(checkAvailability, 120000);
-});
-</script>
-    
-    <!-- Contact -->
-    <section id="contact" class="container">
-        <h2>联系我们 / Contact Us</h2>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>地址 / Address</h3>
-                <p>123 Jalan Besar, Kuala Lumpur, Malaysia</p>
-            </div>
-            <div class="footer-section">
-                <h3>营业时间 / Hours</h3>
-                <p>每日 / Daily: 9:00 AM - 10:00 PM</p>
-            </div>
-            <div class="footer-section">
-                <h3>联系方式 / Contact</h3>
-                <p>电话 / Tel: +60 12-345 6789</p>
-                <p>电邮 / Email: hello@houseofjin.com</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 金咖啡 House of Jin. 版权所有 / All rights reserved.</p>
-            <p>传承三十年的味道 / 30 Years of Heritage Flavor</p>
-        </div>
-    </footer>
+    <script>
+        // 初始化日期选择器（默认为今天）
+        document.getElementById('date').valueAsDate = new Date();
+        
+        // 实时检查可订状态
+        async function checkAvailability() {
+            try {
+                const date = document.getElementById('date').value;
+                const response = await fetch(`https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=check&date=${date}`);
+                const data = await response.json();
+                
+                if (data.isFull) {
+                    document.getElementById('bookingForm').style.display = 'none';
+                    document.getElementById('fullBookingAlert').style.display = 'block';
+                } else {
+                    document.getElementById('bookingForm').style.display = 'block';
+                    document.getElementById('fullBookingAlert').style.display = 'none';
+                    
+                    // 更新可订时段
+                    const timeSelect = document.getElementById('time');
+                    timeSelect.innerHTML = '<option value="">选择时间 / Select time</option>';
+                    
+                    data.availableSlots.forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        timeSelect.appendChild(option);
+                    });
+                    
+                    // 显示剩余座位
+                    document.getElementById('availableSlots').innerHTML = `
+                        <strong>剩余座位: ${data.remainingSeats}</strong>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('availableSlots').textContent = "系统繁忙，请稍后再试";
+            }
+        }
+        
+        // 日期变化时重新检查
+        document.getElementById('date').addEventListener('change', checkAvailability);
+        
+        // 表单提交处理
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "提交中...";
+            
+            try {
+                const formData = new FormData(form);
+                const params = {
+                    action: "book",
+                    name: formData.get('name'),
+                    date: formData.get('date'),
+                    time: formData.get('time'),
+                    guests: formData.get('guests'),
+                    phone: formData.get('phone')
+                };
+                
+                const response = await fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(params)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === "success") {
+                    document.getElementById('bookingId').textContent = result.bookingId;
+                    document.getElementById('confirmationMsg').style.display = 'block';
+                    form.style.display = 'none';
+                } else {
+                    alert(`订位失败: ${result.message || '未知错误'}`);
+                }
+            } catch (error) {
+                alert("网络错误，请稍后再试");
+                console.error(error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "确认订位 / Confirm Booking";
+            }
+        });
+        
+        // 初始加载
+        checkAvailability();
+    </script>
 </body>
 </html>
