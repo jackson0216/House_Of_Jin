@@ -179,55 +179,7 @@
             min-width: 200px;
         }
         
-        .language-switcher {
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .language-switcher button {
-            background: none;
-            border: 1px solid white;
-            color: white;
-            padding: 5px 15px;
-            margin: 0 5px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        
-        .language-switcher button.active {
-            background-color: white;
-            color: #5a3921;
-        }
- 
-        #contact.container {
-            padding: 20px;
-            background: #f8f8f8; /* 可选背景色 */
-      }
-
-      .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-      }
-
-      .footer-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-
-      @media (max-width: 768px) {
-     .footer-content {
-          grid-template-columns: 1fr;
-          gap: 15px;
-     }
-    .footer-section {
-          padding: 15px;
-    }
-            /* Reservation Section Styles */
+        /* Reservation Section Styles */
         #reservation {
             background-color: #fff;
             padding: 40px;
@@ -310,6 +262,7 @@
             padding: 20px;
             border-radius: 4px;
             margin-top: 30px;
+            text-align: center;
         }
         
         .customer-count {
@@ -318,22 +271,18 @@
             color: #5a3921;
         }
         
-        /* Staff Section */
-        .staff-section {
+        .update-time {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .staff-note {
+            margin-top: 20px;
+            padding: 10px;
             background-color: #e9ecef;
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 40px;
-        }
-        
-        .staff-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
-        .staff-controls input {
-            max-width: 100px;
+            border-radius: 4px;
+            font-size: 14px;
         }
         
         @media (max-width: 768px) {
@@ -343,8 +292,8 @@
             
             .form-group.full-width {
                 grid-column: span 1;
-    }
-  }
+            }
+        }
     </style>
 </head>
 <body>
@@ -358,6 +307,7 @@
                     <li><a href="#menu">菜单 / Menu</a></li>
                     <li><a href="#gallery">环境 / Gallery</a></li>
                     <li><a href="#contact">联系我们 / Contact</a></li>
+                    <li><a href="#reservation">在线订位 / Reservation</a></li>
                 </ul>
             </nav>
         </div>
@@ -499,7 +449,6 @@
                 <label for="time">时间 / Time</label>
                 <select id="time" name="time" required>
                     <option value="">选择时间 / Select time</option>
-                    <!-- Times will be populated by JavaScript -->
                 </select>
             </div>
             
@@ -523,184 +472,17 @@
             <p>加载中... / <span class="english">Loading...</span></p>
         </div>
         
-        <!-- Staff Section for Customer Count -->
-        <div class="staff-section">
+        <!-- Customer Count Display -->
+        <div id="currentCustomers">
             <h3>当前顾客人数 / Current Customers</h3>
-            <div id="currentCustomers">
-                <p>店内顾客: <span class="customer-count">0</span></p>
-                <div class="staff-controls">
-                    <input type="number" id="customerCountInput" min="0" max="100" value="0">
-                    <button id="updateCustomerCount">更新人数 / Update Count</button>
-                </div>
-            </div>
+            <p>店内顾客: <span class="customer-count">0</span></p>
+            <p class="update-time">最后更新: <span id="lastUpdated">--</span></p>
+            <p class="staff-note">
+                员工请在Google表格中更新人数<br>
+                <span class="english">Staff please update count in Google Sheet</span>
+            </p>
         </div>
-</section>
-
-<script>
-// Configuration
-const API_URL = 'https://script.google.com/macros/s/AKfycbzaIooFS7OCEt6HUY0ZlZ8b1ljS-ePdvaK6UWHJj518HaLDUT-4M4YbxPSfz1WkDVJqnQ/exec'; 
-
-// DOM Elements
-const bookingForm = document.getElementById('bookingForm');
-const waitlistForm = document.getElementById('waitlistForm');
-const fullBookingAlert = document.getElementById('fullBookingAlert');
-const successMessage = document.getElementById('successMessage');
-const joinWaitlistBtn = document.getElementById('joinWaitlist');
-const availableSlotsEl = document.getElementById('availableSlots');
-const customerCountEl = document.querySelector('.customer-count');
-const updateCountBtn = document.getElementById('updateCustomerCount');
-const countInput = document.getElementById('customerCountInput');
-
-// Initialize date picker
-document.getElementById('date').min = new Date().toISOString().split('T')[0];
-
-// Load time slots for today
-loadTimeSlots();
-loadCustomerCount();
-
-// Check availability every 2 minutes
-setInterval(loadTimeSlots, 120000);
-setInterval(loadCustomerCount, 30000);
-
-// Event listeners
-bookingForm.addEventListener('submit', handleReservation);
-joinWaitlistBtn.addEventListener('click', showWaitlistForm);
-updateCountBtn.addEventListener('click', updateCustomerCount);
-
-// Functions
-async function loadTimeSlots() {
-  const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
-  
-  try {
-    const response = await fetch(`${API_URL}?action=checkAvailability&date=${date}`);
-    const data = await response.json();
-    
-    if (data.error) {
-      availableSlotsEl.innerHTML = `Error: ${data.error}`;
-      return;
-    }
-    
-    // Update available slots display
-    if (data.availableSlots.length > 0) {
-      availableSlotsEl.innerHTML = `
-        <strong>${data.availableSlots.join(' | ')}</strong> 
-        (剩余座位: ${data.remainingSeats || 0} / <span class="english">Seats left: ${data.remainingSeats || 0}</span>)
-      `;
-      fullBookingAlert.style.display = 'none';
-    } else {
-      availableSlotsEl.innerHTML = '已满座 / <span class="english">Fully booked</span>';
-      fullBookingAlert.style.display = 'flex';
-    }
-    
-    // Update time slot dropdown
-    updateTimeDropdown(data.availableSlots);
-  } catch (error) {
-    availableSlotsEl.innerHTML = '无法加载数据 / <span class="english">Unable to load data</span>';
-    console.error('Error:', error);
-  }
-}
-
-async function loadCustomerCount() {
-  try {
-    const response = await fetch(`${API_URL}?action=getCustomerCount`);
-    const data = await response.json();
-    
-    if (!data.error) {
-      customerCountEl.textContent = data.count;
-      countInput.value = data.count;
-    }
-  } catch (error) {
-    console.error('Error loading customer count:', error);
-  }
-}
-
-async function updateCustomerCount() {
-  const count = parseInt(countInput.value, 10);
-  
-  if (isNaN(count) {
-    alert('请输入有效数字 / Please enter a valid number');
-    return;
-  }
-  
-  try {
-    const response = await fetch(`${API_URL}?action=updateCustomerCount&count=${count}`);
-    const data = await response.json();
-    
-    if (data.success) {
-      customerCountEl.textContent = count;
-      alert('人数已更新 / Count updated');
-    } else {
-      alert('更新失败 / Update failed');
-    }
-  } catch (error) {
-    console.error('Error updating count:', error);
-    alert('错误 / Error: ' + error.message);
-  }
-}
-
-async function handleReservation(e) {
-  e.preventDefault();
-  
-  const formData = new FormData(bookingForm);
-  const params = new URLSearchParams();
-  
-  for (const [key, value] of formData.entries()) {
-    params.append(key, value);
-  }
-  
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      body: params.toString() + '&action=makeReservation',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
-    
-    const data = await response.json();
-    
-    if (data.error) {
-      alert(`订位失败 / Reservation failed: ${data.error}`);
-    } else {
-      // Show success message
-      bookingForm.reset();
-      successMessage.style.display = 'block';
-      setTimeout(() => successMessage.style.display = 'none', 5000);
-      
-      // Reload availability
-      loadTimeSlots();
-    }
-  } catch (error) {
-    alert('网络错误 / Network error');
-    console.error('Error:', error);
-  }
-}
-
-function showWaitlistForm() {
-  bookingForm.style.display = 'none';
-  waitlistForm.style.display = 'block';
-}
-
-function updateTimeDropdown(availableSlots) {
-  const timeSelect = document.getElementById('time');
-  
-  // Clear existing options except the first
-  while (timeSelect.options.length > 1) {
-    timeSelect.remove(1);
-  }
-  
-  // Add available slots
-  availableSlots.forEach(slot => {
-    const option = document.createElement('option');
-    option.value = slot;
-    option.textContent = slot;
-    timeSelect.appendChild(option);
-  });
-}
-
-// Date change handler
-document.getElementById('date').addEventListener('change', loadTimeSlots);
-</script>
+    </section>
     
     <!-- Contact -->
     <section id="contact" class="container">
@@ -729,7 +511,150 @@ document.getElementById('date').addEventListener('change', loadTimeSlots);
             <p>传承三十年的味道 / 30 Years of Heritage Flavor</p>
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+    // Configuration
+    const API_URL = 'YOUR_DEPLOYED_WEB_APP_URL'; // Replace with your deployed GAS URL
+    const POLL_INTERVAL = 15000; // 15 seconds refresh rate
+    
+    // DOM Elements
+    const bookingForm = document.getElementById('bookingForm');
+    const waitlistForm = document.getElementById('waitlistForm');
+    const fullBookingAlert = document.getElementById('fullBookingAlert');
+    const successMessage = document.getElementById('successMessage');
+    const joinWaitlistBtn = document.getElementById('joinWaitlist');
+    const availableSlotsEl = document.getElementById('liveAvailability').querySelector('p');
+    const customerCountEl = document.querySelector('.customer-count');
+    const lastUpdatedEl = document.getElementById('lastUpdated');
+    
+    // Initialize date picker (min date = today)
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    
+    // Load initial data
+    loadTimeSlots();
+    loadCustomerCount();
+    
+    // Set up auto-refresh
+    setInterval(loadTimeSlots, POLL_INTERVAL);
+    setInterval(loadCustomerCount, POLL_INTERVAL);
+    
+    // Event listeners
+    bookingForm.addEventListener('submit', handleReservation);
+    document.getElementById('date').addEventListener('change', loadTimeSlots);
+    
+    // Load available time slots
+    async function loadTimeSlots() {
+        const dateInput = document.getElementById('date');
+        const date = dateInput.value || new Date().toISOString().split('T')[0];
+        
+        try {
+            // Show loading state
+            availableSlotsEl.innerHTML = '加载中... / <span class="english">Loading...</span>';
+            
+            const response = await fetch(`${API_URL}?action=checkAvailability&date=${date}`);
+            const data = await response.json();
+            
+            if (data.error) {
+                availableSlotsEl.innerHTML = `错误: ${data.error} / <span class="english">Error: ${data.error}</span>`;
+                return;
+            }
+            
+            // Update available slots display
+            if (data.availableSlots && data.availableSlots.length > 0) {
+                availableSlotsEl.innerHTML = `
+                    <strong>${data.availableSlots.join(' | ')}</strong> 
+                    (剩余座位: ${data.remainingSeats || 0} / <span class="english">Seats left: ${data.remainingSeats || 0}</span>)
+                `;
+                fullBookingAlert.style.display = 'none';
+                updateTimeDropdown(data.availableSlots);
+            } else {
+                availableSlotsEl.innerHTML = '已满座 / <span class="english">Fully booked</span>';
+                fullBookingAlert.style.display = 'flex';
+                updateTimeDropdown([]);
+            }
+        } catch (error) {
+            availableSlotsEl.innerHTML = '无法加载数据 / <span class="english">Unable to load data</span>';
+            console.error('Error loading time slots:', error);
+        }
+    }
+    
+    // Update time dropdown with available slots
+    function updateTimeDropdown(availableSlots) {
+        const timeSelect = document.getElementById('time');
+        
+        // Clear existing options except the first
+        timeSelect.innerHTML = '<option value="">选择时间 / Select time</option>';
+        
+        // Add available slots
+        if (availableSlots && availableSlots.length > 0) {
+            availableSlots.forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot;
+                option.textContent = slot;
+                timeSelect.appendChild(option);
+            });
+        }
+    }
+    
+    // Load current customer count
+    async function loadCustomerCount() {
+        try {
+            const response = await fetch(`${API_URL}?action=getCustomerCount`);
+            const data = await response.json();
+            
+            if (!data.error) {
+                customerCountEl.textContent = data.count;
+                
+                if (data.updatedAt) {
+                    const updated = new Date(data.updatedAt);
+                    lastUpdatedEl.textContent = 
+                        updated.toLocaleTimeString() + ' ' + updated.toLocaleDateString();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading customer count:', error);
+        }
+    }
+    
+    // Handle reservation form submission
+    async function handleReservation(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(bookingForm);
+        const params = new URLSearchParams();
+        
+        for (const [key, value] of formData.entries()) {
+            params.append(key, value);
+        }
+        
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: params.toString() + '&action=makeReservation',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                alert(`订位失败 / Reservation failed: ${data.error}`);
+            } else {
+                // Show success message
+                bookingForm.reset();
+                successMessage.style.display = 'block';
+                setTimeout(() => successMessage.style.display = 'none', 5000);
+                
+                // Reload availability
+                loadTimeSlots();
+            }
+        } catch (error) {
+            alert('网络错误 / Network error');
+            console.error('Error submitting reservation:', error);
+        }
+    }
+    </script>
 </body>
 </html>
-
-
