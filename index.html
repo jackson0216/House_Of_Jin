@@ -178,7 +178,7 @@
         async function checkAvailability() {
             try {
                 const date = document.getElementById('date').value;
-                const response = await fetch(`https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?action=check&date=${date}`);
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbzLhesO4APjDwnhjxiTX0oxQeHqen_KYmHv4I4Lztnk/exec?action=check&date=${date}`);
                 const data = await response.json();
                 
                 if (data.isFull) {
@@ -262,3 +262,4 @@
     </script>
 </body>
 </html>
+
