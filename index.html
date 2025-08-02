@@ -227,6 +227,123 @@
     .footer-section {
           padding: 15px;
     }
+            /* Reservation Section Styles */
+        #reservation {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 40px auto;
+            max-width: 800px;
+        }
+        
+        .reservation-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #5a3921;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #5a3921;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #3a2514;
+        }
+        
+        .alert {
+            padding: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .alert button {
+            background-color: #721c24;
+        }
+        
+        .success-message {
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        #currentCustomers {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 30px;
+        }
+        
+        .customer-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5a3921;
+        }
+        
+        /* Staff Section */
+        .staff-section {
+            background-color: #e9ecef;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .staff-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .staff-controls input {
+            max-width: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .reservation-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+    }
   }
     </style>
 </head>
@@ -434,3 +551,4 @@ document.addEventListener('DOMContentLoaded', () => {
     </footer>
 </body>
 </html>
+
